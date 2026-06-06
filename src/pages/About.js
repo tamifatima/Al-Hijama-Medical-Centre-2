@@ -7,7 +7,7 @@ import cuppingImg from '../images/cupping.jpg';
 import aftercareImg from '../images/aftercare.jpg';
 
 const processSteps = [
-  { num: '1', title: 'Consultation', desc: 'Discuss your health history, concerns, and goals with our certified practitioner before the session.', image: consultImg, image: consultImg },
+  { num: '1', title: 'Consultation', desc: 'Discuss your health history, concerns, and goals with our certified practitioner before the session.', image: consultImg },
   { num: '2', title: 'Skin Preparation', desc: 'The target area is gently cleansed and prepared. Cups are placed on specific therapeutic points.', image: skinprepImg },
   { num: '3', title: 'Cupping Therapy', desc: 'Gentle suction draws out toxins, stimulates blood flow, and promotes deep cellular healing.', image: cuppingImg },
   { num: '4', title: 'Aftercare Guidance', desc: 'Thorough clean-up, rest advice, and personalized guidance on hydration and diet for best results.', image: aftercareImg },
