@@ -231,11 +231,49 @@ export function AppProvider({ children }) {
     return newBooking;
   };
 
-  const approveBooking = async (id) => {
+  const getPhoneDigits = (phone) => (phone || '').replace(/\D/g, '');
+
+  const formatBookingDate = (date) => {
+    if (!date) return '';
+    return new Date(date).toLocaleDateString('en-GB', {
+      day: 'numeric',
+      month: 'short',
+      year: 'numeric',
+    });
+  };
+
+  const buildConfirmationMessage = (booking) => {
+    const dateLabel = formatBookingDate(booking.preferredDate);
+    const practitionerLabel = booking.practitioner ? `${booking.practitioner} practitioner` : 'practitioner';
+    return `Assalamu Alaikum ${booking.fullName}, your Hijama booking for ${dateLabel} with ${practitionerLabel} has been approved. We look forward to seeing you at ${booking.address}.`;
+  };
+
+  const openWhatsAppConfirmation = (booking) => {
+    const phone = getPhoneDigits(booking.phoneNumber);
+    if (!phone) {
+      showToast('Invalid phone number for WhatsApp notification.', 'error');
+      return;
+    }
+    const text = encodeURIComponent(buildConfirmationMessage(booking));
+    window.open(`https://wa.me/${phone}?text=${text}`, '_blank');
+  };
+
+  const openSmsConfirmation = (booking) => {
+    const phone = getPhoneDigits(booking.phoneNumber);
+    if (!phone) {
+      showToast('Invalid phone number for SMS notification.', 'error');
+      return;
+    }
+    const text = encodeURIComponent(buildConfirmationMessage(booking));
+    window.location.href = `sms:${phone}?body=${text}`;
+  };
+
+  const approveBooking = async (booking) => {
     try {
-      await updateDoc(doc(db, 'bookings', id), { isApproved: true });
-      setBookings(prev => prev.map(b => b.id === id ? { ...b, isApproved: true } : b));
+      await updateDoc(doc(db, 'bookings', booking.id), { isApproved: true });
+      setBookings(prev => prev.map(b => b.id === booking.id ? { ...b, isApproved: true } : b));
       showToast('Booking approved successfully!');
+      openWhatsAppConfirmation(booking);
     } catch (error) {
       console.error('Approve booking failed:', error);
       showToast('Unable to approve booking.', 'error');

@@ -151,7 +151,7 @@ export default function AdminDashboard() {
                       <td>
                         <div className="table-actions">
                           {!b.isApproved && (
-                            <button className="btn-success-sm" onClick={() => approveBooking(b.id)}>
+                            <button className="btn-success-sm" onClick={() => approveBooking(b)}>
                               <i className="fas fa-check"></i> Approve
                             </button>
                           )}
